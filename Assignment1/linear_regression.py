@@ -17,6 +17,22 @@ class LinearRegression():
             y (array<m>): a vector of floats
         """
         # TODO: Implement
+
+        self.weights = np.zeros(x.shape[1]) #x.shape = datapunkter, features
+        self.bias = 0
+        
+        # Gradient Descent
+        for _ in range(self.epochs):
+            lin_model = np.matmul(self.weights, x.transpose()) + self.bias
+            y_pred = self._sigmoid(lin_model)
+            grad_w, grad_b = self.compute_gradients(x, y, y_pred)
+            self.update_parameters(grad_w, grad_b)
+            loss = self._compute_loss(y, y_pred)
+            pred_to_class = [1 if _y > 0.5 else 0 for _y in y_pred]
+            self.train_accuracies.append(accuracy(y, pred_to_class))
+            self.losses.append(loss)
+
+
         raise NotImplementedError("The fit method is not implemented yet.")
     
     def predict(self, X):
